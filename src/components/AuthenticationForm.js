@@ -1,18 +1,6 @@
 import { FormGroup, FormControl, Button, Checkbox } from 'react-bootstrap';
 import React, { Component } from 'react';
-
-function query(url, body) {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  return fetch(url,
-      { method: 'POST',
-        headers: myHeaders,
-        body: body })
-      .then( response => response.json())
-      .catch( error => {
-        console.log(error, "error");
-      });
-}
+import { query } from '../common/utils'
 
 class AuthenticationForm extends Component {
   state  = {

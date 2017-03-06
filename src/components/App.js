@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Home from './Home.js';
 import AuthenticationForm from './AuthenticationForm.js';
-import SModal from './Modal.js';
+import { Modal } from 'react-bootstrap';
 import '../stylesheet/App.css';
 
 class App extends Component {
 
   state = {
-    authenticated: false
+    isAuthenticated: false,
+    user: {}
   }
 
   logout() {
@@ -16,18 +17,20 @@ class App extends Component {
   }
 
   componentWillMount() {
-    const userData = JSON.parse(localStorage.getItem('app-user')) || {};
-    this.setState({ authenticated: userData.token !== undefined })
+    const user = JSON.parse(localStorage.getItem('app-user')) || {};
+    this.setState({user, isAuthenticated: user.token !== undefined })
   }
 
   render() {
-      console.log(this.state.authenticated);
+    const { user, isAuthenticated } = this.state
       return(
           <div>
-            <SModal isAuthenticated={this.state.authenticated} >
-              <AuthenticationForm />
-            </SModal>
-            <Home onLogout={this.logout.bind(this)}/>
+            <Modal show={!isAuthenticated} enforceFocus={true} >
+              <Modal.Body>
+              <AuthenticationForm isAuthenticated={isAuthenticated}/>
+              </Modal.Body>
+            </Modal>
+            <Home onLogout={this.logout.bind(this)} user={user}/>
           </div>
       )
 
