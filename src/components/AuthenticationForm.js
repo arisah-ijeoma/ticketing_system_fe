@@ -50,6 +50,7 @@ class AuthenticationForm extends Component {
     query('http://localhost:3000/customers', signUpUser)
         .then( authUser => {
           if(authUser.data.attributes.token) {
+            localStorage.setItem('app-user', JSON.stringify(authUser.data.attributes))
             this.props.onChange(true)
           }
         })
@@ -60,6 +61,7 @@ class AuthenticationForm extends Component {
     query('http://localhost:3000/sessions', signInUser)
         .then( authUser => {
           if(authUser.data.attributes.token) {
+            localStorage.setItem('app-user', JSON.stringify(authUser.data.attributes))
             this.props.onChange(true)
           }
         })

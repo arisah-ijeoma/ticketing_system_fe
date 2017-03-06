@@ -6,16 +6,28 @@ import '../stylesheet/App.css';
 
 class App extends Component {
 
-  render() {
+  state = {
+    authenticated: false
+  }
 
-    //const userData = JSON.parse(localStorage.getItem('app-user'));
-    //if (userData && userData.id) {
+  logout() {
+    localStorage.removeItem('app-user');
+    this.setState({authenticated: false})
+  }
+
+  componentWillMount() {
+    const userData = JSON.parse(localStorage.getItem('app-user')) || {};
+    this.setState({ authenticated: userData.token !== undefined })
+  }
+
+  render() {
+      console.log(this.state.authenticated);
       return(
           <div>
-            <SModal>
+            <SModal isAuthenticated={this.state.authenticated} >
               <AuthenticationForm />
             </SModal>
-            <Home/>
+            <Home onLogout={this.logout.bind(this)}/>
           </div>
       )
 

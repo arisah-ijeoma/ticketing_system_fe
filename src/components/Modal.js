@@ -9,17 +9,22 @@ class SModal extends Component {
   }
 
   removeModal( value ) {
-    this.setState({isAuthenticated: value})
+    this.setState({ isAuthenticated: value })
+  }
+
+  componentWillReceiveProps({isAuthenticated}) {
+    this.setState({ isAuthenticated })
   }
 
   render () {
     const { isAuthenticated } = this.state;
+
     return (
         <div className="static-modal">
           <Modal show={!isAuthenticated} enforceFocus={true}>
 
             <Modal.Body>
-            {React.cloneElement(this.props.children, { onChange: this.removeModal.bind(this)})}
+              {React.cloneElement(this.props.children, { onChange: this.removeModal.bind(this)})}
             </Modal.Body>
 
           </Modal>
