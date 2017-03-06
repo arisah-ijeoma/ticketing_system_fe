@@ -9,8 +9,8 @@ function query(url, body) {
         headers: myHeaders,
         body: body })
       .then( response => response.json())
-      .then( customer => {
-        console.log(customer);
+      .then( user => {
+        console.log(user);
       })
       .catch( error => {
         console.log(error, "error");
@@ -41,20 +41,21 @@ class AuthenticationForm extends Component {
   }
 
   submit (e) {
+    var user = this.getUser(this.state);
     if (this.state.checked) {
-      return this.signin(this.getUser(this.state));
+      return this.signin(user);
     }
-    return this.signup({customer: this.getUser(this.state)});
+    return this.signup({customer: user});
   }
 
   signup(user) {
     var signUpUser = JSON.stringify(user);
-    query('http://localhost:3000/customers', signUpUser );
+    query('http://localhost:3000/customers', signUpUser);
   }
 
   signin (user) {
     var signInUser = JSON.stringify(user);
-    query('http://localhost:3000/sessions', signInUser );
+    query('http://localhost:3000/sessions', signInUser);
   }
 
   checkBox (e) {
