@@ -5,14 +5,20 @@ import SModal from './Modal.js';
 import '../stylesheet/App.css';
 
 class App extends Component {
+
   render() {
 
-    const userData = JSON.parse(localStorage.getItem('app-user'));
-    if (userData && userData.id) {
-      return <Home />
-    } else {
-      return <SModal authenticated={false}><AuthenticationForm /></SModal>
-    }
+    //const userData = JSON.parse(localStorage.getItem('app-user'));
+    //if (userData && userData.id) {
+      return(
+          <div>
+            <SModal>
+              <AuthenticationForm />
+            </SModal>
+            <Home/>
+          </div>
+      )
+
   }
 }
 

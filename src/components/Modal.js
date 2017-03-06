@@ -4,14 +4,22 @@ import React, { Component } from 'react';
 
 class SModal extends Component {
 
+  state = {
+    isAuthenticated: false
+  }
+
+  removeModal( value ) {
+    this.setState({isAuthenticated: value})
+  }
+
   render () {
-    const { children, authenticated } = this.props;
+    const { isAuthenticated } = this.state;
     return (
         <div className="static-modal">
-          <Modal show={!authenticated} enforceFocus={true}>
+          <Modal show={!isAuthenticated} enforceFocus={true}>
 
             <Modal.Body>
-                { children }
+            {React.cloneElement(this.props.children, { onChange: this.removeModal.bind(this)})}
             </Modal.Body>
 
           </Modal>

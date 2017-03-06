@@ -4,14 +4,11 @@ import React, { Component } from 'react';
 function query(url, body) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  fetch(url,
+  return fetch(url,
       { method: 'POST',
         headers: myHeaders,
         body: body })
       .then( response => response.json())
-      .then( user => {
-        console.log(user);
-      })
       .catch( error => {
         console.log(error, "error");
       });
@@ -50,12 +47,22 @@ class AuthenticationForm extends Component {
 
   signup(user) {
     var signUpUser = JSON.stringify(user);
-    query('http://localhost:3000/customers', signUpUser);
+    query('http://localhost:3000/customers', signUpUser)
+        .then( authUser => {
+          if(authUser.data.attributes.token) {
+            this.props.onChange(true)
+          }
+        })
   }
 
   signin (user) {
     var signInUser = JSON.stringify(user);
-    query('http://localhost:3000/sessions', signInUser);
+    query('http://localhost:3000/sessions', signInUser)
+        .then( authUser => {
+          if(authUser.data.attributes.token) {
+            this.props.onChange(true)
+          }
+        })
   }
 
   checkBox (e) {
