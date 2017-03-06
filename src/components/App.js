@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Login from './Login.js';
 import Home from './Home.js';
-import './App.css';
+import AuthenticationForm from './AuthenticationForm.js';
+import SModal from './Modal.js';
+import '../stylesheet/App.css';
 
 class App extends Component {
   render() {
@@ -9,7 +10,9 @@ class App extends Component {
     const userData = JSON.parse(localStorage.getItem('app-user'));
     if (userData && userData.id) {
       return <Home />
-    } else { return <Login /> }
+    } else {
+      return <SModal authenticated={false}><AuthenticationForm /></SModal>
+    }
   }
 }
 
