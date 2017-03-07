@@ -35,22 +35,21 @@ class AuthenticationForm extends Component {
 
   signup(user) {
     var signUpUser = JSON.stringify(user);
-    query('http://localhost:3000/customers', signUpUser)
+    query('http://localhost:3000/customers',{}, signUpUser)
         .then( authUser => {
           if(authUser.data.attributes.token) {
-            localStorage.setItem('app-user', JSON.stringify(authUser.data.attributes))
-            this.props.onChange(true)
+            this.props.authenticated(authUser.data.attributes)
           }
         })
   }
 
   signin (user) {
     var signInUser = JSON.stringify(user);
-    query('http://localhost:3000/sessions', signInUser)
+    query('http://localhost:3000/sessions', {}, signInUser)
         .then( authUser => {
           if(authUser.data.attributes.token) {
-            localStorage.setItem('app-user', JSON.stringify(authUser.data.attributes))
-            this.props.onChange(true)
+            console.log(authUser)
+            this.props.authenticated(authUser.data.attributes)
           }
         })
   }

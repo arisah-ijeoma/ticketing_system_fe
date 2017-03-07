@@ -2,9 +2,11 @@ import { Label, Button } from 'react-bootstrap';
 import { Navbar } from 'react-bootstrap/lib'
 import React, { Component } from 'react';
 import Ticket, { AddTicket } from './Ticket';
+import TicketContainer from './TicketContainer';
 import { Modal } from 'react-bootstrap';
 import '../stylesheet/App.css';
-import { query } from '../common/utils'
+import { query, request } from '../common/utils'
+import _ from 'lodash'
 
 class Home extends Component {
   state = {
@@ -15,6 +17,7 @@ class Home extends Component {
 
   logout(e) {
     var {user} = this.state;
+    console.log(user);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", user.token);
@@ -34,7 +37,12 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    this.setState({user: this.props.user})
+    const { user } = this.props
+    this.setState({ user })
+  }
+
+  componentWillReceiveProps ({user}) {
+    this.setState({user})
   }
 
   addTicket () {
@@ -49,16 +57,17 @@ class Home extends Component {
           if (data !== undefined ) {
             this.setState({isAdding: false })
           }
-          console.log(data);
+          console.log(data, "ghfhfgh")
+          this.setState({ticket: data});
         })
   }
 
   render() {
     const { isAdding } = this.state
-    var {user} = this.state;
+    var {user, ticket} = this.state;
     return (
-        <div>
-          <Modal show={isAdding}>
+        <div className="home">
+          <Modal show={isAdding} enforceFocus={false}>
             <AddTicket onSubmit={this.submitTicket.bind(this)}/>
           </Modal>
           <Navbar>
@@ -74,28 +83,15 @@ class Home extends Component {
             </Navbar.Header>
 
           </Navbar>
-          <div>
+          <div className="ticket-menu">
             <Label>All tickets</Label>
-            <Button className="pull-right" onClick={this.addTicket.bind(this)}>Add ticket</Button>
+            { user.admin === undefined ? <Button className="pull-right" onClick={this.addTicket.bind(this)}>Add ticket</Button> : "" }
           </div>
 
-          <Ticket />
+          <TicketContainer ready={user.token} newData={ticket} isAdmin={user.admin}/>
         </div>
     );
   }
 }
 
 export default Home;
-
-
-    //<div className="container">
-    //<div>
-    //  <div><Label>Hi {this.props.name}</Label></div>
-    //  <Button className="pull-right" onClick={this.logout.bind(this)}>Log Out</Button>
-// <Button className="pull-right" onClick={this.logout.bind(this)}>Add ticket</Button>
-    //</div>
-    //<div>
-    //<Label>Tickets</Label>
-    //</div>
-    //<Ticket />
-    //</div>

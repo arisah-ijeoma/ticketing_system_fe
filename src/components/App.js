@@ -13,12 +13,17 @@ class App extends Component {
 
   logout() {
     localStorage.removeItem('app-user');
-    this.setState({authenticated: false})
+    this.setState({isAuthenticated: false, user:{}})
   }
 
   componentWillMount() {
     const user = JSON.parse(localStorage.getItem('app-user')) || {};
     this.setState({user, isAuthenticated: user.token !== undefined })
+  }
+
+  didAuthenticate(user) {
+    localStorage.setItem('app-user', JSON.stringify(user))
+    this.setState({user, isAuthenticated: true })
   }
 
   render() {
@@ -27,13 +32,13 @@ class App extends Component {
           <div>
             <Modal show={!isAuthenticated} enforceFocus={true} >
               <Modal.Body>
-              <AuthenticationForm isAuthenticated={isAuthenticated}/>
+              <AuthenticationForm isAuthenticated={isAuthenticated}
+                  authenticated={this.didAuthenticate.bind(this)} />
               </Modal.Body>
             </Modal>
             <Home onLogout={this.logout.bind(this)} user={user}/>
           </div>
       )
-
   }
 }
 
